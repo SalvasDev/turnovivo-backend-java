@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: turnovivo-postgres-local
+    environment:
+      POSTGRES_USER: turnovivo_admin
+      POSTGRES_PASSWORD: turnovivo_secret_pass_2026
+      POSTGRES_DB: turnovivo_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_turnovivo_data:/var/lib/postgresql/data
+    networks:
+      - turnovivo-network
+    command: ["postgres", "-c", "max_connections=100"]
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: turnovivo-redis-local
+    command: redis-server --requirepass turnovivo_redis_pass_2026 --notify-keyspace-events Ex
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_turnovivo_data:
+    driver: local
+  redis_turnovivo_data:
+    driver: local
+
+networks:
+  turnovivo-network:
+    driver: bridge

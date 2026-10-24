@@ -1,0 +1,12 @@
+# No enviar al contexto de build de Docker lo que no se necesita.
+target/
+.git/
+.gitignore
+.idea/
+*.iml
+.env
+.env.*
+!.env.production.example
+README*.md
+.github/
+HELP.md

@@ -1,0 +1,38 @@
+# =====================================================================
+# PRODUCTION profile
+# Activated with the environment variable: SPRING_PROFILES_ACTIVE=prod
+#
+# Contains only the SETTINGS that differ from application.yml (the base profile).
+# Real credentials and URLs are injected through environment variables on the
+# hosting platform; sensitive values are NEVER written here.
+# =====================================================================
+spring:
+  # Do not display SQL queries in production to reduce noise and prevent possible data leaks.
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+# Optional seed for the platform's first SUPER_ADMIN.
+# If these variables are undefined, startup continues without creating users.
+app:
+  seed:
+    super-admin:
+      email: ${SEED_SUPER_ADMIN_EMAIL:}
+      password: ${SEED_SUPER_ADMIN_PASSWORD:}
+
+# Harden error responses: controlled errors still return their "message"
+# through GlobalExceptionHandler, while uncontrolled errors do not expose
+# internal details or stack traces.
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+
+logging:
+  level:
+    root: info
+    org.hibernate.SQL: warn
+    org.springframework.web: info

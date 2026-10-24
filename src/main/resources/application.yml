@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: turnovivo-backend
+
+  # Default active-profile configuration
+  profiles:
+    active: dev
+
+  # Database configuration (PostgreSQL)
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/turnovivo_db}
+    username: ${DB_USERNAME:turnovivo_admin}
+    password: ${DB_PASSWORD:turnovivo_secret_pass_2026}
+    driver-class-name: org.postgresql.Driver
+    # Connection-pool configuration (HikariCP)
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1800000
+
+  # JPA / Hibernate configuration
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true # Muestra las consultas SQL en la consola para desarrollo
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1
+
+  # Redis client configuration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:turnovivo_redis_pass_2026}
+      ssl:
+        enabled: ${REDIS_TLS:false}
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 2
+          max-wait: -1ms
+
+# Custom security and application settings
+app:
+  jwt:
+    secret: ${JWT_SECRET:turnovivo_super_secret_key_2026_signature_hash_must_be_long_enough_for_sha256}
+    expiration-ms: 86400000 # Equivalente a 1 día en milisegundos (24 * 60 * 60 * 1000)
+  hold:
+    ttl-seconds: 30 # Sincronizado con tus 30 segundos de NestJS
+  demo:
+    super-admin:
+      email: ${DEMO_SUPER_ADMIN_EMAIL:}
+      password: ${DEMO_SUPER_ADMIN_PASSWORD:}
+    admin:
+      email: ${DEMO_ADMIN_EMAIL:}
+      password: ${DEMO_ADMIN_PASSWORD:}
+    staff:
+      email: ${DEMO_STAFF_EMAIL:}
+      password: ${DEMO_STAFF_PASSWORD:}
+    customer:
+      email: ${DEMO_CUSTOMER_EMAIL:}
+      password: ${DEMO_CUSTOMER_PASSWORD:}
+
+# Tomcat server-port configuration
+server:
+  port: ${PORT:3000} # Mantenemos el puerto 3000 de tu NestJS original
+  error:
+    include-message: always
