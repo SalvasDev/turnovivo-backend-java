@@ -28,7 +28,7 @@ public class SlotCalendarService {
 
     static final int WINDOW_DAYS = 14;
     static final int SLOTS_PER_DAY = 16;
-    private static final LocalTime OPENING_TIME = LocalTime.of(9, 0);
+    private static final LocalTime OPENING_TIME = LocalTime.of(10, 0);
 
     private final AppointmentSlotRepository slotRepository;
     private final BusinessRepository businessRepository;
